@@ -8,7 +8,7 @@ import {
 } from "../lib/api";
 import { Link } from "react-router";
 import { useEffect, useState } from "react";
-
+import NoFriendsFound from "../components/NoFriendsFound";
 const FriendsPage = () => {
     const queryClient = useQueryClient();
      const { data: friends = [], isLoading: loadingFriends } = useQuery({
