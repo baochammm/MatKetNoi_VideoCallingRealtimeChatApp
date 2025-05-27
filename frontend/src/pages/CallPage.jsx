@@ -43,7 +43,7 @@ const CallPage = () => {
         console.log("Initializing Stream video client...");
 
         const user = {
-          id: authUser._id,
+          id: authUser.id.toString(),
           name: authUser.fullName,
           image: authUser.profilePic,
         };

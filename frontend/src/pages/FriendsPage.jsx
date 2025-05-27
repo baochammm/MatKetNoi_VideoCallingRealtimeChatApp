@@ -27,7 +27,7 @@ return (
       // Changed from grid to flex row
       <div className="flex flex-row flex-wrap gap-4">
         {friends.map((friend) => (
-          <FriendCard key={friend._id} friend={friend} />
+          <FriendCard key={friend.id} friend={friend} />
         ))}
       </div>
     )}

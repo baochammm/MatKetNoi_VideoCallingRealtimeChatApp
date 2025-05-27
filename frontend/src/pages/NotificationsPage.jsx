@@ -68,7 +68,7 @@ const NotificationsPage = () => {
 
                           <button
                             className="btn btn-primary btn-sm"
-                            onClick={() => acceptRequestMutation(request._id)}
+                            onClick={() => acceptRequestMutation(request.id)}
                             disabled={isPending}
                           >
                             Accept

@@ -21,6 +21,7 @@
     "matketnoi": "file:..",
     "mongodb": "^6.16.0",
     "mongoose": "^8.13.2",
+    "sequelize": "^6.37.7",
     "stream-chat": "^8.60.0"
   },
   "devDependencies": {

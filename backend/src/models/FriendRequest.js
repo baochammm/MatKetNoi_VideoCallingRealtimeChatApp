@@ -1,28 +1,22 @@
-import mongoose from "mongoose";
+import { DataTypes, Model } from 'sequelize';
+import sequelize from '../lib/sequelize.js';
+import User from './User.js';
 
-const friendRequestSchema = new mongoose.Schema(
-  {
-    sender: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "User",
-      required: true,
-    },
-    recipient: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "User",
-      required: true,
-    },
-    status: {
-      type: String,
-      enum: ["pending", "accepted"],
-      default: "pending",
-    },
-  },
-  {
-    timestamps: true,
+class FriendRequest extends Model {}
+
+FriendRequest.init({
+  status: {
+    type: DataTypes.ENUM('pending', 'accepted'),
+    defaultValue: 'pending',
   }
-);
+}, {
+  sequelize,
+  modelName: 'FriendRequest',
+  timestamps: true,
+});
 
-const FriendRequest = mongoose.model("FriendRequest", friendRequestSchema);
+// Associations
+FriendRequest.belongsTo(User, { as: 'sender', foreignKey: 'senderId' });
+FriendRequest.belongsTo(User, { as: 'recipient', foreignKey: 'recipientId' });
 
 export default FriendRequest;
