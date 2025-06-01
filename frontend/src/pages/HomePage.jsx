@@ -105,7 +105,7 @@ const HomePage = () => {
                 </p>
               </div>
             </div>
-          </div>
+            
            {/* Learner search input */}
             <div className="mt-4 max-w-xs">
               <input
@@ -116,6 +116,9 @@ const HomePage = () => {
                 onChange={(e) => setLearnerSearchTerm(e.target.value)}Add commentMore actions
               />
             </div>
+          </div>
+
+
           {loadingUsers ? (
             <div className="flex justify-center py-12">
               <span className="loading loading-spinner loading-lg" />
