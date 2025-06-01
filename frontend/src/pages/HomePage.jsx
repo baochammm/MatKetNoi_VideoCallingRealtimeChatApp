@@ -15,8 +15,13 @@ import FriendCard, { getLanguageFlag } from "../components/FriendCard";
 import NoFriendsFound from "../components/NoFriendsFound";
 
 const HomePage = () => {
+
   const queryClient = useQueryClient();
   const [outgoingRequestsIds, setOutgoingRequestsIds] = useState(new Set());
+    // Add search stateAdd commentMore actions
+  const [searchTerm, setSearchTerm] = useState("");
+  // Add learner search state
+  const [learnerSearchTerm, setLearnerSearchTerm] = useState("");
 
   const { data: friends = [], isLoading: loadingFriends } = useQuery({
     queryKey: ["friends"],
@@ -37,6 +42,14 @@ const HomePage = () => {
     mutationFn: sendFriendRequest,
     onSuccess: () => queryClient.invalidateQueries({ queryKey: ["outgoingFriendReqs"] }),
   });
+  const filteredFriends = friends.filter((friend) =>
+    friend.fullName?.toLowerCase().includes(searchTerm.toLowerCase())
+  );
+
+  // Filter recommended users by name (case-insensitive)
+  const filteredLearners = recommendedUsers.filter((user) =>
+    user.fullName?.toLowerCase().includes(learnerSearchTerm.toLowerCase())
+  );
 
   useEffect(() => {
     const outgoingIds = new Set();
@@ -58,16 +71,25 @@ const HomePage = () => {
             Friend Requests
           </Link>
         </div>
-
+     {/* Search input */}
+        <div className="mb-4 max-w-xs">
+          <input
+            type="text"
+            placeholder="Search friends..."
+            className="input input-bordered w-full"
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+          />
+        </div>
         {loadingFriends ? (
           <div className="flex justify-center py-12">
             <span className="loading loading-spinner loading-lg" />
           </div>
-        ) : friends.length === 0 ? (
+        ) : filteredFriends.length === 0 ? (
           <NoFriendsFound />
         ) : (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
-            {friends.map((friend) => (
+            {filteredFriends.map((friend) => (
               <FriendCard key={friend.id} friend={friend} />
             ))}
           </div>
@@ -84,12 +106,21 @@ const HomePage = () => {
               </div>
             </div>
           </div>
-
+           {/* Learner search input */}
+            <div className="mt-4 max-w-xs">
+              <input
+                type="text"
+                placeholder="Search new learners..."
+                className="input input-bordered w-full"
+                value={learnerSearchTerm}
+                onChange={(e) => setLearnerSearchTerm(e.target.value)}Add commentMore actions
+              />
+            </div>
           {loadingUsers ? (
             <div className="flex justify-center py-12">
               <span className="loading loading-spinner loading-lg" />
             </div>
-          ) : recommendedUsers.length === 0 ? (
+          ) : filteredLearners.length === 0 ? (
             <div className="card bg-base-200 p-6 text-center">
               <h3 className="font-semibold text-lg mb-2">No recommendations available</h3>
               <p className="text-base-content opacity-70">
@@ -98,7 +129,7 @@ const HomePage = () => {
             </div>
           ) : (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {recommendedUsers.map((user) => {
+              {filteredLearners.map((user) => {
                 const hasRequestBeenSent = outgoingRequestsIds.has(user.id);
 
                 return (
